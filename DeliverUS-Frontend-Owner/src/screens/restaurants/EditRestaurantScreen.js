@@ -22,12 +22,16 @@ export default function EditRestaurantScreen ({ navigation, route }) {
   const [backendErrors, setBackendErrors] = useState()
   const [restaurant, setRestaurant] = useState({})
 
-  const [initialRestaurantValues, setInitialRestaurantValues] = useState({ name: null, description: null, address: null, postalCode: null, url: null, shippingCosts: null, email: null, phone: null, restaurantCategoryId: null, logo: null, heroImage: null })
+  const [initialRestaurantValues, setInitialRestaurantValues] = useState({ name: null, description: null, address: null, postalCode: null, url: null, shippingCosts: null, email: null, phone: null, discount: null, restaurantCategoryId: null, logo: null, heroImage: null })
   const validationSchema = yup.object().shape({
     name: yup
       .string()
       .max(255, 'Name too long')
       .required('Name is required'),
+    discount: yup
+      .number()
+      .positive('Discount cant be negative')
+      .lessThan(100, 'Discount cant be 100'),
     address: yup
       .string()
       .max(255, 'Address too long')
@@ -186,7 +190,10 @@ export default function EditRestaurantScreen ({ navigation, route }) {
                 name='phone'
                 label='Phone:'
               />
-
+              <InputItem
+                name='discount'
+                label='Discount Percentage:'
+              />
               <DropDownPicker
                 open={open}
                 value={values.restaurantCategoryId}
